@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz de Anatomia Interativo</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+    .quiz-container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .question { font-size: 18px; font-weight: bold; margin: 20px 0 10px; }
+    .options { margin-bottom: 20px; }
+    .options label { display: block; margin-bottom: 5px; }
+    button { padding: 10px 20px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    .result { font-size: 20px; font-weight: bold; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <div id="quiz"></div>
+    <button onclick="submitQuiz()">Enviar Respostas</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "Qual é a posição anatômica padrão do corpo humano?",
+        options: ["Deitado de barriga para cima", "Em pé, com os braços estendidos lateralmente e palmas para frente", "Sentado com os braços cruzados", "Deitado de lado esquerdo"],
+        answer: 1
+      },
+      {
+        question: "Qual estrutura pertence ao sistema esquelético?",
+        options: ["Fêmur", "Tendão", "Artéria", "Músculo bíceps"],
+        answer: 0
+      },
+      {
+        question: "O que caracteriza uma articulação do tipo sinovial?",
+        options: ["Ausência de movimento", "Cartilagem fibrosa entre os ossos", "Presença de cápsula articular com líquido sinovial", "Ligamento elástico unindo os ossos"],
+        answer: 2
+      }
+    ];
+
+    function loadQuiz() {
+      const quizContainer = document.getElementById("quiz");
+      quizData.forEach((q, index) => {
+        const questionEl = document.createElement("div");
+        questionEl.className = "question";
+        questionEl.textContent = `${index + 1}. ${q.question}`;
+        
+        const optionsEl = document.createElement("div");
+        optionsEl.className = "options";
+        
+        q.options.forEach((opt, i) => {
+          const label = document.createElement("label");
+          label.innerHTML = `<input type="radio" name="q${index}" value="${i}"> ${opt}`;
+          optionsEl.appendChild(label);
+        });
+
+        quizContainer.appendChild(questionEl);
+        quizContainer.appendChild(optionsEl);
+      });
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      quizData.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === q.answer) {
+          score++;
+        }
+      });
+      document.getElementById("result").textContent = `Você acertou ${score} de ${quizData.length} perguntas.`;
+    }
+
+    loadQuiz();
+  </script>
+</body>
+</html>
